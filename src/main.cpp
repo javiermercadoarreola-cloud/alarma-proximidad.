@@ -1,15 +1,30 @@
 #include <Arduino.h>
 
-const int TRIG_PIN  = 9;
+// ============================================================
+// Alarma de proximidad: HC-SR04 + sensor MH Flying Fish
+// <= 15 cm: LED rojo + buzzer | >= 16 cm: LED verde, buzzer apagado
+// ============================================================
+
+// ---------- Pines ----------
+const int TRIG_PIN  = 9;     // HC-SR04
 const int ECHO_PIN  = 10;
-const int MH_PIN    = 2;
-const int LED_VERDE = 4;
+const int MH_PIN    = 2;     // Sensor MH Flying Fish (salida OUT)
+const int LED_VERDE = 11;
 const int LED_ROJO  = 5;
 const int BUZZER    = 6;
 
-const int DISTANCIA_PELIGRO_CM = 10;
+// ---------- Parámetros ----------
+const int DISTANCIA_PELIGRO_CM = 15;   // <= 15 cm = rojo + buzzer
+
+// false = solo decide el HC-SR04 (recomendado para empezar)
+// true  = el MH también activa la alerta (calibra antes su tornillito)
+const bool USAR_MH = false;
+
+// El MH pone OUT en LOW cuando detecta un obstáculo.
+// Si en tus pruebas sale al revés, cambia a false.
 const bool MH_ACTIVO_EN_BAJO = true;
 
+// Lee la distancia en cm (-1 si no hay lectura)
 long medirDistanciaCm() {
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
@@ -22,6 +37,7 @@ long medirDistanciaCm() {
   return duracion * 0.0343 / 2;
 }
 
+// Devuelve true si el sensor MH detecta un obstáculo
 bool mhDetecta() {
   int lectura = digitalRead(MH_PIN);
   return MH_ACTIVO_EN_BAJO ? (lectura == LOW) : (lectura == HIGH);
@@ -42,7 +58,7 @@ void loop() {
   long distancia = medirDistanciaCm();
   bool hcCerca = (distancia >= 0 && distancia <= DISTANCIA_PELIGRO_CM);
   bool mhCerca = mhDetecta();
-  bool muyCerca = hcCerca || mhCerca;
+  bool muyCerca = hcCerca || (USAR_MH && mhCerca);
 
   digitalWrite(LED_ROJO,  muyCerca ? HIGH : LOW);
   digitalWrite(LED_VERDE, muyCerca ? LOW  : HIGH);
@@ -53,8 +69,9 @@ void loop() {
   else { Serial.print(distancia); Serial.print(" cm"); }
   Serial.print(" | MH: ");
   Serial.print(mhCerca ? "DETECTA" : "libre");
+  Serial.print(USAR_MH ? "" : " (desactivado)");
   Serial.print(" | Estado: ");
-  Serial.println(muyCerca ? "MUY CERCA (ROJO)" : "SEGURO (VERDE)");
+  Serial.println(muyCerca ? "MUY CERCA (ROJO + BUZZER)" : "SEGURO (VERDE)");
 
   delay(200);
 }
