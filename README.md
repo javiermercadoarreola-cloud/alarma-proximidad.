@@ -55,11 +55,11 @@ El código está en `src/main.cpp`.
 ## Pruebas
 | Prueba | Resultado esperado | Resultado obtenido |
 |---|---|---|
-| Mano a 5 cm | Rojo y buzzer | [completar] |
-| Mano a 15 cm | Rojo y buzzer | [completar] |
-| Mano a 16 cm | Verde, buzzer apagado | [completar] |
-| Mano a 30 cm | Verde, buzzer apagado | [completar] |
-| Sin objeto enfrente | Verde, buzzer apagado | [completar] |
+| Mano a 5 cm | Rojo y buzzer | LED rojo encendido |
+| Mano a 15 cm | Rojo y buzzer | LED rojo encendido |
+| Mano a 16 cm | Verde, buzzer apagado | LED verde encendido |
+| Mano a 30 cm | Verde, buzzer apagado | LED verde encendido |
+| Sin objeto enfrente | Verde, buzzer apagado | LED verde encendido |
 
 ## Evidencias
 - Foto del circuito: [circuito.jpg](evidencias/circuito.jpg)
