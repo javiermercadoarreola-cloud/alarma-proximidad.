@@ -62,9 +62,9 @@ El código está en `src/main.cpp`.
 | Sin objeto enfrente | Verde, buzzer apagado | LED verde encendido |
 
 ## Evidencias
-- Foto del circuito: [circuito.jpg](evidencias/circuito.jpg)
-- Captura del monitor serie: [serial-monitor.png](evidencias/serial-monitor.png)
+## Evidencias
 - Video de la prueba: [video-prueba.mp4](evidencias/video-prueba.mp4)
+  Muestra el circuito funcionando: LED rojo y buzzer con la mano a 15 cm o menos, LED verde a 16 cm o más y sin objeto.
 
 ## Dificultades y soluciones
 - El LED verde no encendía en el pin 4. Se cambió al pin 11 y funcionó.
